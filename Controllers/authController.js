@@ -185,6 +185,7 @@ const personalInfoUpdate = async (req, res) => {
       .status(200)
       .json({ message: "User updated successfully", user: userUpdate });
   } catch (err) {
+    console.log(err)
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

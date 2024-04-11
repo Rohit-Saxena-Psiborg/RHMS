@@ -7,7 +7,7 @@ const {
   OTPSchema,
   signupSchema,
   loginSchema,
-  userData
+  userData,
 } = require("../Validation/validationSchema");
 const multer = require("multer");
 const storage = multer.diskStorage({
