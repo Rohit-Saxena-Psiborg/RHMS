@@ -64,14 +64,6 @@ const loginSchema = z.object({
     .trim()
     .min(8, { message: "At least 8 char" })
     .max(20, { message: "At most 20 char" }),
-  // .refine(
-  //   (value) => {
-  //     const regex =
-  //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,20}$/;
-  //     return regex.test(value);
-  //   },
-  //   { message: "Password Doesn't Correct Format" }
-  // ),
 });
 const userData = z.object({
   phone: z
