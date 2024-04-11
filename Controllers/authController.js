@@ -22,7 +22,7 @@ const sendOtp = async (req, res) => {
   try {
     const { name, email } = req.body;
     if (await Userd.findOne({ email })) {
-      return res.status(401).json("Email already exist");
+      return res.status(409).json({ message: "Email already exist" });
     }
     const verifyOtp = generateOtp(6);
     transporter.sendMail(
@@ -64,7 +64,7 @@ const verifyotpMatch = async (req, res) => {
     const { email, name, verifyOtp } = req.otp;
     const { otp } = req.body;
     if (otp !== verifyOtp) {
-      return res.status(401).json("Otp is wrong");
+      return res.status(401).json({ message: "Otp is not match" });
     }
     const passToken = jwt.sign({ email, name }, process.env.PASSWORD, {
       expiresIn: "3m",
@@ -87,13 +87,11 @@ const signup = async (req, res) => {
   try {
     const { email, name } = req.user;
     const { password, confirmpassword } = req.body;
-    if (!password || !confirmpassword) {
-      return res.status(400).json({ message: "Enter all fileds" });
-    } else if (password !== confirmpassword) {
+    if (password !== confirmpassword) {
       return res.status(400).json({ message: "Password Not Match" });
     } else if (await Userd.findOne({ email })) {
       console.log();
-      return res.status(400).json({ message: "User already exist" });
+      return res.status(409).json({ message: "User already exist" });
     }
     const newUser = new Userd({ name, email, password });
     await newUser.save();
@@ -105,16 +103,13 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: "Enter all fileds" });
-    }
     const user = await Userd.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "User Not found" });
+      return res.status(404).json({ message: "User Not found" });
     }
     const ispassword = bcrypt.compare(password, user.password);
     if (!ispassword) {
-      return res.status(400).json({ message: "Password not match" });
+      return res.status(401).json({ message: "Password not match" });
     }
     res
       .cookie("token", await user.generateToken(), {
@@ -185,7 +180,7 @@ const personalInfoUpdate = async (req, res) => {
       .status(200)
       .json({ message: "User updated successfully", user: userUpdate });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
