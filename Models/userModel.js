@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const addressSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   fullAddress: {
     type: String,
   },
@@ -19,6 +20,7 @@ const addressSchema = new mongoose.Schema({
   },
 });
 const professionalSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   doctorType: {
     type: String,
   },
