@@ -58,7 +58,7 @@ const sendOtp = async (req, res) => {
       }
     );
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
