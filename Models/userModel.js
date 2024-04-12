@@ -84,6 +84,7 @@ userSchema.pre("save", async function (next) {
     console.log(err.message);
   }
 });
+
 userSchema.methods.generateToken = async function () {
   try {
     return jwt.sign(

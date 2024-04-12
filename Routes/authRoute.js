@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../Controllers/authController");
 const validate = require("../Middleware/validationMiddleware");
+
 const {
   sendOtpSchema,
   OTPSchema,
@@ -9,6 +10,7 @@ const {
   loginSchema,
   userData,
 } = require("../Validation/validationSchema");
+
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -18,10 +20,13 @@ const storage = multer.diskStorage({
     return cb(null, `${req.user._id}${file.originalname}`);
   },
 });
+
 const upload = multer({ storage });
+
 const authVerify = require("../Middleware/authValidation");
 const otpToken = require("../Middleware/otpMiddleware");
 const signupMid = require("../Middleware/signupMiddleware");
+
 router.route("/sendotp").post(validate(sendOtpSchema), authController.sendOtp);
 router
   .route("/verifyotp")
@@ -29,8 +34,11 @@ router
 router
   .route("/signup")
   .post(validate(signupSchema), signupMid, authController.signup);
+
 router.route("/login").post(validate(loginSchema), authController.login);
+
 router.route("/verify").get(authVerify, authController.verifyUser);
+
 router
   .route("/info")
   .patch(
@@ -39,4 +47,5 @@ router
     validate(userData),
     authController.personalInfoUpdate
   );
+
 module.exports = router;
