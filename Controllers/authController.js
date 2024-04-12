@@ -21,6 +21,9 @@ const transporter = nodemailer.createTransport({
 const sendOtp = async (req, res) => {
   try {
     const { name, email } = req.body;
+    if(!email || !name){
+      return res.state(400).json({message:"Please enter all fields"})
+    }
     if (await Userd.findOne({ email })) {
       return res.status(409).json({ message: "Email already exist" });
     }
@@ -63,6 +66,9 @@ const verifyotpMatch = async (req, res) => {
   try {
     const { email, name, verifyOtp } = req.otp;
     const { otp } = req.body;
+    if(!otp){
+      return res.state(400).json({message:"Please enter all fields"})
+    }
     if (otp !== verifyOtp) {
       return res.status(401).json({ message: "Otp is not match" });
     }
@@ -87,6 +93,9 @@ const signup = async (req, res) => {
   try {
     const { email, name } = req.user;
     const { password, confirmpassword } = req.body;
+    if(!confirmpassword || !password){
+      return res.state(400).json({message:"Please enter all fields"})
+    }
     if (password !== confirmpassword) {
       return res.status(400).json({ message: "Password Not Match" });
     } else if (await Userd.findOne({ email })) {
@@ -103,6 +112,9 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if(!email || !password){
+      return res.state(400).json({message:"Please enter all fields"})
+    }
     const user = await Userd.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User Not found" });
