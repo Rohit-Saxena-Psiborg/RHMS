@@ -2,9 +2,17 @@ const { z } = require("zod");
 const sendOtpSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
+    .trim()
     .email({ message: "Invalid Email" })
     .max(50, { message: "At most 50 char" })
-    .trim(),
+    .refine(
+      (value) => {
+        const regex = /^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        console.log(regex.test(value));
+        return regex.test(value);
+      },
+      { message: "email can't be start with special char and number" }
+    ),
   name: z
     .string({ required_error: "Name will be required" })
     .trim()
@@ -56,9 +64,17 @@ const signupSchema = z.object({
 const loginSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
+    .trim()
     .email({ message: "Invalid Email" })
     .max(50, { message: "At most 50 char" })
-    .trim(),
+    .refine(
+      (value) => {
+        const regex = /^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        console.log(regex.test(value));
+        return regex.test(value);
+      },
+      { message: "email can't be start with special char and number" }
+    ),
   password: z
     .string({ required_error: "Password is required" })
     .trim()
@@ -89,18 +105,9 @@ const userData = z.object({
     )
     .refine(
       (value) => {
-        const currentDate = new Date();
-        const minDate = new Date(
-          currentDate.getFullYear() - 80,
-          currentDate.getMonth(),
-          currentDate.getDate()
-        );
-        const maxDate = new Date(
-          currentDate.getFullYear() - 18,
-          currentDate.getMonth(),
-          currentDate.getDate()
-        );
-        return value >= minDate && value <= maxDate;
+        const dateOfBirth = new Date(value);
+        const age = new Date().getFullYear() - dateOfBirth.getFullYear();
+        return age >= 18 && age <= 80;
       },
       { message: "Date of birth must be between 18 and 80 years old" }
     ),
