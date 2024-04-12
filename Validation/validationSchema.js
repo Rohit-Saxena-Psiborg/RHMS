@@ -3,7 +3,7 @@ const sendOtpSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .trim()
-    .min(1, { message: "Email is required" })
+    .min(1, { error: "Email is required" })
     .email({error:"Invalid Email"}) 
     .max(50, { message: "At most 50 char" })
     .refine(
@@ -17,6 +17,7 @@ const sendOtpSchema = z.object({
   name: z
     .string({ required_error: "Name will be required" })
     .trim()
+    .min(1, { error: "Name is required" })
     .min(3, { message: "At least 3 char in Name" })
     .max(30, { message: "At most 30 char in Name" })
     .refine(
@@ -31,6 +32,7 @@ const OTPSchema = z.object({
   otp: z
     .number({ message: "OTP must be a 6-digit number" })
     .int()
+    .min(1, { error: "OTP is required" })
     .min(100000)
     .max(999999),
 });
@@ -38,6 +40,7 @@ const signupSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .trim()
+    .min(1, { error: "Password is required" })
     .min(8, { message: "At least 8 char" })
     .max(20, { message: "At most 20 char" })
     .refine(
@@ -51,6 +54,7 @@ const signupSchema = z.object({
   confirmpassword: z
     .string({ required_error: "Password is required" })
     .trim()
+    .min(1, { merror: "Password is required" })
     .min(8, { message: "At least 8 char" })
     .max(20, { message: "At most 20 char" })
     .refine(
@@ -66,7 +70,7 @@ const loginSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .trim()
-    .min(1, { message: "Email is required" })
+    .min(1, { error: "Email is required" })
     .email({error:"Invalid Email"})  
     .max(50, { message: "At most 50 char" })
     .refine(
@@ -80,6 +84,7 @@ const loginSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .trim()
+    .min(1, { error: "Password is required" })
     .min(8, { message: "At least 8 char" })
     .max(20, { message: "At most 20 char" }),
 });
