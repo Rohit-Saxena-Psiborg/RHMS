@@ -3,7 +3,8 @@ const sendOtpSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .trim()
-    .email({ message: "Invalid Email" })
+    .email()
+    .min(1, { message: "Email is required" }) 
     .max(50, { message: "At most 50 char" })
     .refine(
       (value) => {
@@ -65,7 +66,8 @@ const loginSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .trim()
-    .email({ message: "Invalid Email" })
+    .email()
+    .min(1, { message: "Email is required" }) 
     .max(50, { message: "At most 50 char" })
     .refine(
       (value) => {
