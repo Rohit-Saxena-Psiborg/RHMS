@@ -129,17 +129,38 @@ const userData = z.object({
     .string()
     .trim()
     .min(2, { message: "City should be at least 2 char" })
-    .max(50, { message: "City should be atleast 50 Char" }),
+    .max(50, { message: "City should be atleast 50 Char" })
+    .refine(
+      (value) => {
+        const regex = /^[a-zA-Z ]*$/;
+        return regex.test(value);
+      },
+      { message: "City doesn't contain Number and Symbols" }
+    ),
   state: z
     .string()
     .trim()
     .min(2, { message: "State should be at least 2 char" })
-    .max(20, { message: "State should be atleast 20 Char" }),
+    .max(20, { message: "State should be atleast 20 Char" })
+    .refine(
+      (value) => {
+        const regex = /^[a-zA-Z ]*$/;
+        return regex.test(value);
+      },
+      { message: "Name doesn't contain Number and Symbols" }
+    ),
   country: z
     .string()
     .trim()
     .min(3, { message: "Country should be at least 3 char" })
-    .max(56, { message: "Country should be atleast 56 Char" }),
+    .max(56, { message: "Country should be atleast 56 Char" })
+    .refine(
+      (value) => {
+        const regex = /^[a-zA-Z ]*$/;
+        return regex.test(value);
+      },
+      { message: "Name doesn't contain Number and Symbols" }
+    ),
   doctorType: z.string(),
   speciality: z.string(),
   yearOfexp: z.string().refine((value) => {
