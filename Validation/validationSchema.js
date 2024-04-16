@@ -4,7 +4,7 @@ const sendOtpSchema = z.object({
     .string({ required_error: "Email is required" })
     .trim()
     .min(1, { error: "Email is required" })
-    .email({error:"Invalid Email"}) 
+    .email({ error: "Invalid Email" })
     .max(50, { message: "At most 50 char" })
     .refine(
       (value) => {
@@ -33,8 +33,13 @@ const OTPSchema = z.object({
     .number({ message: "OTP must be a 6-digit number" })
     .int()
     .min(1, { error: "OTP is required" })
-    .min(100000)
-    .max(999999),
+    .max(999999)
+    .refine((value) => {
+      const v = value.toString();
+      if (v.length === 6) {
+        return value;
+      }
+    }),
 });
 const signupSchema = z.object({
   password: z
@@ -71,7 +76,7 @@ const loginSchema = z.object({
     .string({ required_error: "Email is required" })
     .trim()
     .min(1, { error: "Email is required" })
-    .email({error:"Invalid Email"})  
+    .email({ error: "Invalid Email" })
     .max(50, { message: "At most 50 char" })
     .refine(
       (value) => {
